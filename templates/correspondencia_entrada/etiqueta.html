@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>Imagenologia - Etiqueta</title>
+        <style>
+        @page {
+            size: 7.8cm 6cm ;
+            margin: -8px;
+            padding: 0px;
+        }
+        
+        .texto {
+            font-family: "Bar-Code 39";
+            font-size: 14pt;
+            height: 3px;
+            text-align: center;
+        }
+
+        .text {
+            text-align: left;
+            font-weight: 900;
+            font-size: 6.2pt;
+            height: 3px;
+        }
+        .text a {
+            font-weight: 500;
+        }
+        table {
+            width: auto;
+            height: 2px;
+            font-family: Verdana;
+        }
+        .etiqueta{
+            width: 60px;
+        }
+        .fecha{
+            width: 60px;
+            margin-left: -10px;
+        }
+        .campo{
+            width: 60px;
+            font-size: 60%;
+        }
+        .div2 {
+            float: left;
+            margin: 2px;
+            width: 7.55cm;
+            height: 5.7cm;
+            border-style: solid;
+            border-radius: 5px 5px 5px 5px;
+            -moz-border-radius: 5px 5px 5px 5px;
+            -webkit-border-radius: 5px 5px 5px 5px;
+            border-color: black;
+
+        }
+        .imagen {
+            width: 40px;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="div2">
+            <table>
+                <tr>
+                    <td class="text etiqueta" colspan="2">CODIGO DE RADICADO:</td>
+                    <td class="text" colspan="3"><a> {{ numero_radicacion}} </a></td>
+                </tr>
+                <tr>
+                    <td colspan="6"><hr></td>
+                </tr>
+                <tr>
+                    <td class="text etiqueta" colspan="2">TIPO CORRESPONDENCIA:</td>
+                    <td class="text" colspan="2"><a> {{ tipo_correspondencia }} </a></td>
+                </tr>
+                <tr>
+                    <td class="text etiqueta" colspan="2">FECHA DE RADICACIÓN:</td>
+                    <td class="text" colspan="3"><a> {{ fecha_recibido }} - {{ hora_recibido }} </a></td>
+                </tr>
+                <tr>
+                    <td class="text etiqueta" colspan="2">FECHA DE DOCUMENTO:</td>
+                    <td class="text" colspan="2"><a> {{ fecha_documento }} </a></td>
+                </tr>
+                <tr>
+                    <td class="text" colspan="2">N° DE FOLIOS:</td>
+                    <td class="text" colspan="2"><a> {{ folios }} </a></td>
+                </tr>
+                <tr>
+                    <td class="text etiqueta" colspan="2">TIPO DE DOCUMENTO:</td>
+                    <td class="text" colspan="3"><a> {{ tipo_documento }}</a></td>
+                </tr>
+                <tr>
+                    <td class="text etiqueta" colspan="2">REMITENTE:</td>
+                    <td class="text campo" colspan="4"><a>{{ remitente }}</a></td>
+                </tr>
+                <tr>
+                    <td class="text fecha" colspan="2">N° ID:</td>
+                    <td class="text fecha" colspan="1"><a>{{ numero_id }}</a></td>
+                </tr>
+                <tr>
+                    <td class="text etiqueta" colspan="2">AREA DE DESTINO:</td>
+                    <td class="text campo" colspan="4"><a>{{ dependencia }} </a></td>
+                </tr>
+                <tr>
+                    <td class="text fecha" colspan="2">ASUNTO:</td>
+                    <td class="text" colspan="5"><a>{{ asunto }}</a></td>
+                </tr>
+                <tr>
+                    <td class="texto" colspan="7">*{{ numero_radicacion }}*</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

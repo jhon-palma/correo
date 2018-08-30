@@ -1,0 +1,65 @@
+<div class="container initial">
+	<!-- Modal -->
+	<div id="remitente_modal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="card border-info modal-content">
+                <div class="card-header bg-info text-white">
+                    <i class="fa fa-bars"></i> <a id="titulo_remitente">&emsp;Nuevo Remitente</a>
+                    <button type="button" id="cerrar_remitente" class="close fa-2x text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <form class="form-horizontal" method="post" id="form_guardar_remitente" action="{% url 'guardar_remitente' %}"> {% csrf_token %}
+                    <div class="card-body">
+                        <div class="row">
+                            <div style="display: none">
+                                <input type="text" id="tipo_operacion" name="tipo_operacion" value="">
+                                <input type="text" id="editarId" name="edicion_id">
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <label class="col-form-label-sm">Tipo de persona:</label>
+                                <select class="form-control form-control-sm" name="tipo_persona_remitente" id="tipo_persona_remitente" required>
+                                    <option value="">Seleccione</option>
+                                    {% for tipo_persona in tipo_personas %}
+                                        <option value="{{ tipo_persona.id }}">{{ tipo_persona.tipo }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-lg-12 col-sm-12 col-xs-12">
+                                <label class="col-form-label-sm">Nombre:</label>
+                                <input class="form-control form-control-sm" name="nombre_remitente" id="nombre_remitente" type="text" required />
+                            </div>
+                            <div class="col-lg-6 col-sm-8 col-xs-12">
+                                <label class="col-form-label-sm">Tipo de Id:</label>
+                                <select class="form-control form-control-sm" name="tipo_id_remitente" id="tipo_id_remitente" required>
+                                    <option value="">Seleccione</option>
+                                    {% for tipo_id in tipo_ids %}
+                                        <option value="{{ tipo_id.id }}">{{ tipo_id.tipo }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-sm-8 col-xs-12">
+                                <label class="col-form-label-sm">Número de Id:</label>
+                                <input class="form-control form-control-sm" name="numero_id_remitente" id="numero_id_remitente" maxlength="20" type="text" required />
+                            </div>
+                            <div class="col-lg-12 col-sm-12 col-xs-12">
+                                <label class="col-form-label-sm">Direccion:</label>
+                                <textarea class="form-control form-control-sm" name="direccion_remitente" id="direccion_remitente"></textarea>
+                            </div>
+                            <div class="col-lg-4 col-sm-3 col-xs-12">
+                                <label class="col-form-label-sm">Telefono:</label>
+                                <input class="form-control form-control-sm" name="telefono_remitente" id="telefono_remitente" type="text" required/>
+                            </div>
+                            <div class="col-lg-8 col-sm-9 col-xs-12">
+                                <label class="col-form-label-sm">Correo Electronico:</label>
+                                <input type="email" name="email_remitente" id="email_remitente" class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer border-info">
+                        <button id="guardarRemitente" type="button" class="btn btn-success btn-sm btn-block"><i class="fa fa-check"></i>&emsp;Guardar</button>
+                    </div>
+                 </form>
+			</div>
+		</div>
+	</div>
+</div>

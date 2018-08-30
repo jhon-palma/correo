@@ -1,0 +1,128 @@
+{% extends 'plantilla.html' %}
+
+{% block administracion %}
+	active
+{% endblock %}
+
+{% block title %}
+    Usuarios de sistema <small>Administración</small>
+{% endblock %}
+
+{% block breadcum %}
+    <li class="breadcrumb-item">
+        <i class="fa fa-cogs"></i> Configuración
+    </li>
+    <li class="breadcrumb-item active">
+        <i class="fa fa-users"></i> Creación de Usuarios
+    </li>
+{% endblock %}
+
+{% block content %}
+    {% include "sistema/edicion_usuario.html" %}
+    <div class="row">
+        <div class="col-sm-4 col-12">
+            <div class="card border-primary">
+                <div class="card-header alert-primary border-primary">
+                    <i class="fa fa-users"></i>&emsp;Crear usuario del sistema
+                </div>
+                <form class="form-horizontal" name="form-usuario_sistema" id="form-usuario_sistema" method="post" action="{% url 'guardar_usuario' %}">{% csrf_token %}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="col-form-label-sm">Username:</label>
+                                <input class="form-control form-control-sm" name="username" id="username" type="number" onkeyup="javascript:this.value=this.value.toUpperCase();" required />
+                            </div>
+
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <label class="col-form-label-sm">Nombres:</label>
+                                <input class="form-control form-control-sm" name="firstname" id="firstname" type="text" required />
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <label class="col-form-label-sm">Apellidos:</label>
+                                <input class="form-control form-control-sm" name="lastname" id="lastname" type="text" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="col-form-label-sm">Email:</label>
+                                <input name="email" id="email" class="form-control form-control-sm" type="email" required />
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <label class="col-form-label-sm">Contraseña:</label>
+                                <input name="password" class="form-control form-control-sm" type="password" required />
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <label class="col-form-label-sm">Repita la contraseña:</label>
+                                <input name="rpassword" id="rpassword" class="form-control form-control-sm" type="password" required />
+                            </div>
+                            <div class="ccol-lg-6 col-sm-6 col-xs-12">
+                                <label class="col-form-label-sm">Perfil:</label>
+                                <select class="form-control form-control-sm" name="perfil" required>
+                                    <option value="">Seleccione</option>
+                                    {% for p in perfil %}
+                                        <option value="{{ p.id }}">{{ p.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="ccol-lg-6 col-sm-6 col-xs-12">
+                                <label class="col-form-label-sm">Oficina Corresp.:</label>
+                                <select class="form-control form-control-sm" name="oficina" required>
+                                    <option value="">Seleccione</option>
+                                    {% for o in oficina %}
+                                        <option value="{{ o.id }}">{{ o.oficina }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer border-prymary alert-primary">
+                        <button type="submit" title="Guardar" class="btn btn-success btn-circle btn-sm btn-block"><i class="fa fa-check"></i>&emsp;Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-sm-8 col-12">
+            <div class="card border-success">
+                <div class="card-header border-success alert-success">
+                    <i class="fa fa-table"></i>&emsp;Usuarios del sistema existentes
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover dataTable border-success" width="100%" cellspacing="0">
+                            <thead>
+                                <tr class="alert-success text-center">
+                                    <th>No.</th>
+                                    <th>Username</th>
+                                    <th>Nombre</th>
+                                    <th>Perfil</th>
+                                    <th>Activo</th>
+                                    <th>Editar</th>
+                                    <th>Inhabilitar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for usuario in usuarios %}
+                                {% if usuario.username != 'administrador' %}
+                                    <tr id="user-{{ usuario.id }}">
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ usuario.username }}</td>
+                                        <td>{{ usuario.first_name }} {{ usuario.last_name }}</td>
+                                        <td>{{ usuario.groups.all.0.name }}</td>
+                                        <td class="text-center">{% if usuario.is_active == True %}SI{% else %}NO{% endif %}</td>
+                                        <td class="text-center">
+                                            <button name="editar_usuario" class="btn btn-sm btn-info fa fa-edit" value="{{ usuario.id }}"></button>
+                                        </td>
+                                        <td class="text-center">
+                                            <button name="inhabilitar_usuario" class="btn btn-sm btn-danger fa fa-close" value="{{ usuario.id }}" {% if usuario.is_active == False %}disabled{% endif %}></button>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 60px" class="col-lg-12 col-sm-12 col-xs-12"></div>
+{% endblock %}

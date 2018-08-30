@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Sistema de Gestión documental</title>
+    <link rel="icon" href="/static/img/favicon.ico">
+    <!-- Bootstrap core CSS-->
+    <link href="/static/plantilla/sb-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom fonts for this template-->
+    <link href="/static/plantilla/sb-admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Date Picker -->
+    <link href="/static/plantilla/sb-admin/vendor/datepicker/css/bootstrap_datepicker.css" rel="stylesheet" type="text/css">
+    <link href="/static/plantilla/sb-admin/vendor/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+    <!-- Page level plugin CSS-->
+    <link href="/static/plantilla/sb-admin/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="/static/plantilla/sb-admin/css/sb-admin.css" rel="stylesheet">
+    <link href="/static/plantilla/sb-admin/vendor/css/animate.css" rel="stylesheet">
+    <link href="/static/plantilla/sb-admin/vendor/sweet-alert/css/sweetalert.css" rel="stylesheet">
+    <style>label{font-weight: 900;}</style>
+    {% block style%}{% endblock %}
+
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark sidenav-toggled" id="page-top" onload="notificacion()">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+        <img class="logo" style="top: 0px; left: 0px; position: absolute; width: 55px; height: 55px" src="/static/img/logo.png">
+        <a class="navbar-brand" style="margin-left: 50px" href="">Sistema de Gestión documental</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+                <li class="nav-item {% block menu %}{% endblock %}" data-toggle="tooltip" data-placement="right" title="Inicio">
+                    <a class="nav-link" href="{% url 'menu' %}" >
+                        <i class="fa fa-fw fa-home"></i>
+                        <span class="nav-link-text">&emsp;Inicio</span>
+                    </a>
+                </li>
+
+                {% if user.groups.all.0.name == 'Administrador' or user.groups.all.0.name == 'Correspondencia' %}
+                    <li class="nav-item {% block correspondencia_entrada %}{% endblock %}" data-toggle="tooltip" data-placement="right" title="Correspondencia Entrada">
+                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#correspondencia_entrada" data-parent="#exampleAccordion">
+                            <i class="fa fa-fw fa-archive"></i>
+                            <span class="nav-link-text">&emsp;Corresp. entrante</span>
+                        </a>
+                        <ul class="sidenav-second-level collapse" id="correspondencia_entrada">
+                            <li>
+                                <a href="{% url 'correspondencia_radicado' %}">
+                                    <i class="fa fa-fw fa-stack-overflow"></i>
+                                    <span class="nav-link-text">&nbsp;&nbsp;Búsqueda de documento radicado</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'correspondencia_entrada' %}">
+                                    <i class="fa fa-fw fa-user"></i>
+                                    <span class="nav-link-text">&nbsp;&nbsp;Ingreso de Registros</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'escaneo_documentos' %}">
+                                    <i class="fa fa-fw fa-stack-overflow"></i>
+                                    <span class="nav-link-text">&nbsp;&nbsp;Escaneos de documentos</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item {% block reportes %}{% endblock %}" data-toggle="tooltip" data-placement="right" title="reportes">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#reportes" data-parent="#exampleAccordion">
+                        <i class="fa fa-fw fa-server"></i>
+                        <span class="nav-link-text">&emsp;Reportes</span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="reportes">
+                        <li>
+                            <a href="{% url 'rep_corresp_ent' %}">
+                                <i class="fa fa-fw fa-clipboard"></i>
+                                <span class="nav-link-text">&nbsp;&nbsp;Reporte diario correspondencia entrada</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                {% if user.groups.all.0.name == 'Administrador' or user.groups.all.0.name == 'Archivo' %}
+                    <li class="nav-item {% block administracion %}{% endblock %}" data-toggle="tooltip" data-placement="right" title="Configuración">
+                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#administracion" data-parent="#exampleAccordion">
+                            <i class="fa fa-fw fa-cogs"></i>
+                            <span class="nav-link-text">&emsp;Configuración</span>
+                        </a>
+                        <ul class="sidenav-second-level collapse" id="administracion">
+                            {% if user.groups.all.0.name == 'Administrador' %}
+                                <li>
+                                    <a href="{% url 'usuario' %}">
+                                        <i class="fa fa-fw fa-user"></i>
+                                        <span class="nav-link-text">&nbsp;&nbsp;Usuarios del sistema</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{% url 'tablas_retencion' %}">
+                                    <i class="fa fa-fw fa-stack-overflow"></i>
+                                    <span class="nav-link-text">&nbsp;&nbsp;Tablas de retención</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav sidenav-toggler">
+                <li class="nav-item">
+                    <a class="nav-link text-center" id="sidenavToggler">
+                        <i class="fa fa-fw fa-angle-left"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item div-visibilidad">
+                    <hr class="div">
+                </li>
+                <!--{ include 'menu/menu_top_alerts.html' %}-->
+                <li class="nav-item visibilidad">
+                    <a class="nav-link">
+                        <i class="fa fa-fw fa-user">&emsp;</i>{{ user.first_name }} {{ user.last_name }}
+                    </a>
+                </li>
+                <li class="nav-item div-visibilidad">
+                    <hr class="div">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <i class="fa fa-fw fa-sign-out"></i>Salir
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="container-fluid">
+                <h2 class="page-header">
+                    {% block title %}{% endblock %}
+                </h2>
+            <!-- Breadcrumbs-->
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <i class="fa fa-home"></i> Inicio
+                    </li>
+                    {% block breadcum %}{% endblock %}
+                </ol>
+                <div class="row">
+                    <div class="col-12">
+                      {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+
+            <footer class="sticky-footer">
+                <div class="container">
+                    <div class="text-center">
+                      <small>Copyright © Alcaldia municipal de Girardot 2018</small>
+                    </div>
+                </div>
+            </footer>
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fa fa-angle-up"></i>
+            </a>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/static/plantilla/sb-admin/vendor/jquery/jquery.min.js"></script>
+        <!-- fecha ->
+    <script src="/static/plantilla/sb-admin/vendor/bootstrap-datepicker/js/jquery-ui.min.js"></script-->
+    <script src="/static/plantilla/sb-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="/static/plantilla/sb-admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="/static/plantilla/sb-admin/vendor/chart.js/Chart.min.js"></script>
+    <script src="/static/plantilla/sb-admin/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="/static/plantilla/sb-admin/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/static/plantilla/sb-admin/js/sb-admin.min.js"></script>
+    <script src="/static/plantilla/sb-admin/js/sb-admin-datatables.js"></script>
+
+    <!-- Date Picker -->
+    <script src="/static/plantilla/sb-admin/vendor/datepicker/js/bootstrap_datepicker.js"></script>
+    <script src="/static/plantilla/sb-admin/vendor/bootstrap-datepicker/js/moment.min.js"></script>
+    <script src="/static/plantilla/sb-admin/vendor/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/plantilla/sb-admin/vendor/bootstrap-datepicker/js/bootstrap-datetimepicker.es.js"></script>
+
+    <!-- Custom scripts for this page-->
+    <script src="/static/plantilla/sb-admin/vendor/bootstrap_notify/bootstrap-notify.min.js"></script>
+    <script src="/static/plantilla/sb-admin/vendor/sweet-alert/js/sweetalert.min.js"></script>
+    <script src="/static/js/funciones.js"></script>
+    <!--script src="/static/js/validacion_keypress.js"></script-->
+
+    {% block scripts%}{% endblock %}
+    <script>
+        function notificacion() {
+            if ("{{ indicador }}" == 1) {
+                var type = 'info';
+            } else if ("{{ indicador }}" == 2) {
+                var type = 'success';
+            } else if ("{{ indicador }}" == 0) {
+                var type = 'danger';
+            }
+            $.notify({
+                icon: 'fa fa-info-circle',
+                message: "<strong>" + "{{ mensaje }}" + "</strong> ",
+            }, {
+                type: type,
+                animate: {
+                    enter: 'animated bounceInDown',
+                    exit: 'animated bounceOutUp'
+                },
+                placement: {
+                    from: "top",
+                    align: "center"
+                }
+            });
+        }
+        {% block onload %}{% endblock %}
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('.mont').datepicker({
+                format: 'yyyy-mm-dd',
+                minViewMode: 1,
+                maxViewMode: 2,
+                language: "es",
+                locale: "es",
+                orientation: "bottom auto",
+                autoclose: true
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('.date').datetimepicker({
+                format: 'YYYY-MM-DD',
+                pickTime: false,
+                locale: 'es'
+            });
+
+            $('.time').datetimepicker({
+                format: 'LT',
+                pickDate: false
+            });
+        });
+    </script>
+</body>
+
+</html>

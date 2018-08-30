@@ -1,0 +1,62 @@
+<div class="container initial">
+	<!-- Modal -->
+	<div id="edicion_usuario_modal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="card border-info modal-content">
+                <div class="card-header bg-info text-white mb-3">
+                    <i class="fa fa-bars"></i>&emsp;Edición de usuarios
+                    <button type="button" id="cerrar_usuario" class="close fa-2x text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <form class="form-horizontal form-group-sm" method="post" id="form-guardar_edicion_usuario" action="{% url 'editar_usuario' %}" class="update-form"> {% csrf_token %}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12" hidden="hidden">
+                                <input name="editar_usuario" id="editar_usuario">
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label class="col-form-label-sm">Nombres:</label>
+                                <input class="form-control form-control-sm" id="editar_nombres" name="editar_nombres" required/>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label class="col-form-label-sm">Apellidos:</label>
+                                <input class="form-control form-control-sm" id="editar_apellidos" name="editar_apellidos" required/>
+                            </div>
+                            <div class="col-12">
+                                <hr>
+                            </div>
+                            <div class="col-12">
+                                <label class="col-form-label-sm">Email:</label>
+                                <input class="form-control form-control-sm" id="editar_email" name="editar_email" required/>
+                            </div>
+                            <div class="col-12">
+                                <hr>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label class="col-form-label-sm">Perfil:</label>
+                                <select class="form-control form-control-sm" id="editar_perfil" name="editar_perfil" required>
+                                    <option value="">Seleccione</option>
+                                    {% for p in perfil %}
+                                        <option value="{{ p.id }}">{{ p.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label class="col-form-label-sm">Oficina Corresp.:</label>
+                                <select class="form-control form-control-sm" id="editar_oficina" name="editar_oficina" required>
+                                    <option value="">Seleccione</option>
+                                    {% for o in oficina %}
+                                        <option value="{{ o.id }}">{{ o.oficina }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer border-info">
+                        <button id="guardar_usuario" type="submit" class="btn btn-success btn-sm btn-block"><i class="fa fa-check"></i>&emsp;Guardar</button>
+                    </div>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>

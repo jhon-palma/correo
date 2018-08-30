@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Gestión Documental</title>
+        <link rel="icon" type="image/png" href="/static/vendor/img/favicon.png" />
+
+        <link href="/static/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/sb-admin.css" rel="stylesheet">
+        <link href="/static/vendor/alert_notificacion/css/notifIt.css" rel="stylesheet">
+        <link href="/static/vendor/notificacion/css/animate.css" rel="stylesheet">
+        <link href="/static/vendor/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+        <link href="/static/css/plantilla.css" rel="stylesheet">
+        <link href="/static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+        {% block style %}{% endblock %}
+
+    </head>
+
+    <body onload="notificacion()">
+        <div id="wrapper">
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand log"><img class="logo" src="/static/vendor/img/logo.png"></a>
+                    <a class="navbar-brand">Sistema de Gestión Documental</a>
+                </div>
+
+                <ul class="nav navbar-right top-nav">
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {{ user.first_name }} {{ user.last_name }} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#no_disponible"><i class="fa fa-fw fa-user"></i> Perfil</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="{% url 'logout' %}"><i class="fa fa-fw fa-power-off"></i> Salir</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav side-nav barra-lateral">
+                        <li class="{% block menu %}{% endblock %}">
+                            <a href="{% url 'menu' %}" ><i class="fa fa-fw fa-home fa-2x"></i>&nbsp;&nbsp; Inicio</a>
+                        </li>
+                        {% if user.groups.all.0.name == 'Administrador' or user.groups.all.0.name == 'Correspondencia' %}
+                            <li class="{% block correspondencia_entrada %}{% endblock %}">
+                                <a href="javascript:;" data-toggle="collapse" data-target="#correspondencia_entrada"><i class="fa fa-fw fa-envelope-open fa-2x"></i>&nbsp;&nbsp; Corresp. entrante <i class="fa fa-fw fa-caret-down"></i></a>
+                                <ul id="correspondencia_entrada" class="collapse">
+                                    <li>
+                                        <a href="{% url 'correspondencia_entrada' %}"><i class="fa fa-fw fa-book"></i> Ingreso de Registros</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'escaneo_documentos' %}"><i class="fa fa-fw fa-newspaper-o"></i> Escaneos de documentos</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'correspondencia_radicado' %}"><i class="fa fa-fw fa-search"></i> Busqueda de documentos</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="{% block correspondencia_salida %}{% endblock %}">
+                                <a href="" ><i class="fa fa-fw fa-envelope fa-2x"></i>&nbsp;&nbsp; Corresp. saliente</a>
+                            </li>
+                        {% endif %}
+                        {% if user.groups.all.0.name == 'Administrador' or user.groups.all.0.name == 'Archivo' %}
+                            <li class="{% block administracion %}{% endblock %}">
+                                <a href="javascript:;" data-toggle="collapse" data-target="#administracion"><i class="fa fa-fw fa-cogs fa-2x"></i>&nbsp;&nbsp; Sistema <i class="fa fa-fw fa-caret-down"></i></a>
+                                <ul id="administracion" class="collapse">
+                                    {% if user.groups.all.0.name == 'Administrador' %}
+                                        <li>
+                                            <a href="{% url 'usuario' %}"><i class="fa fa-fw fa-users"></i> Usuarios</a>
+                                        </li>
+                                    {% endif %}
+                                    <li>
+                                        <a href="{% url 'tablas_retencion' %}"><i class="fa fa-fw fa-table"></i> Tablas de Retención</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+
+            <div id="page-wrapper">
+                <div class="col-lg-12 col-md-12 col-xs-12 ">
+                    <h3 class="page-header caja-titulo">
+                        {% block titulo_pagina %}{% endblock %}
+                    </h3>
+                </div>
+                {%  block content %}
+
+                {% endblock %}
+            </div>
+        </div>
+
+        <nav class="navbar navbar-inverse navbar-fixed-bottom">
+            <div class="col-sm-12 margen">
+                <a class="abajo">
+                    <p>&copy; 2016 | open source</p>
+                </a>
+            </div>
+        </nav>
+
+        <script src="/static/vendor/jquery/jquery.min.js"></script>
+        <script src="/static/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/static/vendor/alert_notificacion/js/notifIt.js"></script>
+        <script src="/static/vendor/notificacion/bootstrap_notify/bootstrap-notify.min.js"></script>
+        <script src="/static/vendor/jquery-ui/jquery-ui.min.js"></script>
+        <script src="/static/js/fecha_datepicker.js"></script>
+        <script>
+            function notificacion() {
+                if ("{{ ind }}" == 2) {
+                    var type = 'info';
+                } else if ("{{ ind }}" == 1) {
+                    var type = 'success';
+                } else if ("{{ ind }}" == 0) {
+                    var type = 'danger';
+                }
+                $.notify({
+                    icon: 'fa fa-info-circle',
+                    message: "<strong>" + "{{ aviso }}" + "</strong> "
+                }, {
+                    type: type,
+                    animate: {
+                        enter: 'animated bounceInDown',
+                        exit: 'animated bounceOutUp'
+                    },
+                    placement: {
+                        from: "top",
+                        align: "center"
+                    }
+                });
+                $("#imprimir_etiqueta").hide();
+            }
+        </script>
+        {% block scripts%}{% endblock %}
+    </body>
+</html>

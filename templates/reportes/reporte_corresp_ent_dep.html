@@ -1,0 +1,110 @@
+{% extends 'plantilla.html' %}
+
+{% block reporte %}
+	active
+{% endblock %}
+
+{% block title %}
+    Reportes<small> - Correspondencia Entrante</small>
+{% endblock %}
+
+{% block breadcum %}
+    <li class="breadcrumb-item">
+        <i class="fa fa-folder-open"></i> Correspondencia entrante
+    </li>
+    <li class="breadcrumb-item active">
+        <i class="fa fa-clipboard"></i> Reportes
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div class="card border-info">
+                <div class="card-header text-white bg-info">
+                    <i class="fa fa-tasks"></i>&emsp;Listado de correspondencia entrante
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" name="form-buscar_correspondencia_ent" method="get" action="{% url 'rep_corresp_ent' %}">
+                        <div class="row">
+                            <div class="col-sm-3 col-6">
+                                <label class="col-form-label">Fecha:</label>
+                                <div class="input-group mb-3">
+                                    <input class="form-control form-control-sm date fecha" id="fecha" name="fecha" autocomplete="off" required/>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text alert-info selector_fecha"><i class="fa fa-calendar"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-8">
+                                <label class="col-form-label">Dependencia:</label>
+                                <select class="form-control form-control-sm" id="dependencia" name="dependencia" required>
+                                    <option value="">Seleccione</option>
+                                    {% for d in dependencia %}
+                                    <option value="{{ d.id }}">{{ d.dependencia }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-2">
+                                <label class="col-form-label" style="color: white">_______________</label>
+                                <button type="submit" title="Buscar Registros" class="btn btn-info btn-sm" style="font-weight: 900"><i class="fa fa-search">&emsp;Buscar&emsp;</i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card border-success">
+                <div class="card-header alert-success border-success">
+                    <i class="fa fa-tasks"></i>&emsp;Resultados de la busqueda {% if fecha != '' %}&emsp;&emsp;<b>Fecha:</b>&emsp;{{ fecha }}&emsp;&emsp;<b>Dependencia:&emsp;</b>{{ registros.0.dependencia.dependencia }}&emsp;&emsp;&emsp;<span class="btn btn-success btn-sm" id="reporte_corresp_ent"><i class="fa fa-file-pdf-o"></i> Imprimir Reporte</span> {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover dataTable" width="100%" cellspacing="0" style="font-size: x-small">
+                            <thead class="alert-success text-center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fecha</th>
+                                    <th>N° radicado</th>
+                                    <th>Nombre persona / entidad</th>
+                                    <th>Asunto</th>
+                                    <th>Fecha de documento</th>
+                                    <th>No. folios</th>
+                                    <th>Tipo de documento</th>
+                                </tr>
+                            </thead>
+                            <tfoot class="alert-success text-center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fecha</th>
+                                    <th>N° radicado</th>
+                                    <th>Nombre persona / entidad</th>
+                                    <th>Asunto</th>
+                                    <th>Fecha de documento</th>
+                                    <th>No. folios</th>
+                                    <th>Tipo de documento</th>
+                                </tr>
+                            </tfoot>
+                            <tbody class="text-center">
+                                {% for r in registros %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ r.fecha_recibido | date:"d/m/Y" }} -  {{ r.hora_recibido | date:"h:i a" }}</td>
+                                        <td>{{ r.numero_radicacion }}</td>
+                                        <td>{{ r.remitente.nombre }}</td>
+                                        <td>{{ r.asunto }}</td>
+                                        <td>{{ r.fecha_documento_radicado | date:"d/m/Y" }}</td>
+                                        <td>{{ r.numero_folios_documento }}</td>
+                                        <td>{{ r.tipo_documento.tipo | upper }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

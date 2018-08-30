@@ -1,0 +1,350 @@
+{% extends 'plantilla.html' %}
+
+{% block administracion %}
+	active
+{% endblock %}
+
+{% block title %}
+    Tablas de Retención Documental<small> - Administración</small>
+{% endblock %}
+
+{% block breadcum %}
+    <li class="breadcrumb-item">
+        <i class="fa fa-cogs"></i> Configuración
+    </li>
+    <li class="breadcrumb-item active">
+        <i class="fa fa-table"></i> Tablas de retención documental
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="card-columns">
+        <div class="card border-dark mb-3">
+            <div class="card-header bg-secondary border-dark text-white">
+                <i class="fa fa-tasks"></i>&emsp;Dependencia
+            </div>
+            <form class="form-horizontal" name="form-agregar_dependencia" method="post" action="{% url 'guardar_dependencia' %}">{% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-3 col-xs-4">
+                            <label class="control-label">Codigo:</label>
+                            <input class="form-control form-control-sm" name="codigo_dependencia" id="codigo_dependencia" type="text" />
+                        </div>
+                        <div class="col-lg-10 col-sm-9 col-xs-8">
+                            <label class="control-label">Dependencia:</label>
+                            <input class="form-control form-control-sm" name="agr_dependencia" id="agr_dependencia" type="text" required />
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="col-12 text-right">
+                            <button type="submit" title="Guardar" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i>&emsp;Guardar&emsp;</button>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="table-responsive" style="font-size: x-small">
+                                    <table class="table table-bordered table-hover dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr align="center" style="font-size: 8pt;" class="alert-success">
+                                                <th align="center">No.</th>
+                                                <th align="center">Código</th>
+                                                <th align="center">Dependencia</th>
+                                                <th align="center">Editar</th>
+                                                <th align="center">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rd in dependencias %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ rd.codigo }}</td>
+                                                <td>{{ rd.dependencia }}</td>
+                                                <td align="center">
+                                                    <button name="editar_correspondencia_entrada" type="button" value="{{ rd.id }}" class="btn btn-info btn-circle btn-xs fa fa-pencil"></button>
+                                                </td>
+                                                <td align="center">
+                                                    <button name="anular_correspondencia_entrada" type="button" value="{{ rd.id }}" class="btn btn-danger btn-circle btn-xs fa fa-close"></button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card border-dark mb-3">
+            <div class="card-header bg-secondary border-dark text-white">
+                <i class="fa fa-tasks"></i>&emsp;Subserie Documental
+            </div>
+            <form class="form-horizontal" name="form-agregar_subserie_documental" method="post" action="{% url 'guardar_subserie_documental' %}">{% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3 col-12">
+                            <label class="control-label">Codigo:</label>
+                            <input class="form-control form-control-sm" name="codigo_subserie_documental" id="codigo_subserie_documental" type="text" />
+                        </div>
+                        <div class="col-sm-9 col-12">
+                            <label class="control-label">Subserie Documental:</label>
+                            <input class="form-control form-control-sm" name="agr_subserie_documental" id="subserie_documental" type="text" />
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="col-12 text-right">
+                            <button type="submit" title="Guardar" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i>&emsp;Guardar&emsp;</button>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="table-responsive" style="font-size: x-small">
+                                    <table class="table table-bordered table-hover dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr align="center" style="font-size: 8pt;" class="alert-success">
+                                                <th align="center">No.</th>
+                                                <th align="center">Código</th>
+                                                <th align="center">Subserie Documental</th>
+                                                <th align="center">Editar</th>
+                                                <th align="center">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rsu in subseries %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ rsu.1 }}</td>
+                                                <td>{{ rsu.2 }}</td>
+                                                <td align="center">
+                                                    <button name="editar_correspondencia_entrada" type="button" value="{{ rsu.0 }}" class="btn btn-info btn-circle btn-xs fa fa-pencil"></button>
+                                                </td>
+                                                <td align="center">
+                                                    <button name="anular_correspondencia_entrada" type="button" value="{{ rsu.0 }}" class="btn btn-danger btn-circle btn-xs fa fa-close"></button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card border-dark mb-3">
+            <div class="card-header bg-secondary border-dark text-white">
+                <i class="fa fa-tasks"></i>&emsp;Serie Documental
+            </div>
+            <form class="form-horizontal" name="form-agregar_serie_documental" method="post" action="{% url 'guardar_serie_documental' %}">{% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-3">
+                            <label class="control-label">Codigo:</label>
+                            <input class="form-control form-control-sm" name="codigo_serie_documental" id="codigo_serie_documental" type="text" />
+                        </div>
+                        <div class="col-9">
+                            <label class="control-label">Serie Documental:</label>
+                            <input class="form-control form-control-sm" name="agr_serie_documental" id="serie_documental" type="text" />
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="col-12 text-right">
+                            <button type="submit" title="Guardar" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i>&emsp;Guardar&emsp;</button>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="table-responsive" style="font-size: x-small">
+                                    <table class="table table-bordered table-hover dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr align="center" style="font-size: 8pt;" class="alert-success">
+                                                <th align="center">No.</th>
+                                                <th align="center">Código</th>
+                                                <th align="center">Subserie Documental</th>
+                                                <th align="center">Editar</th>
+                                                <th align="center">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for rs in series %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ rs.1 }}</td>
+                                                <td>{{ rs.2 }}</td>
+                                                <td align="center">
+                                                    <button name="editar_correspondencia_entrada" type="button" value="{{ rs.0 }}" class="btn btn-info btn-circle btn-xs fa fa-pencil"></button>
+                                                </td>
+                                                <td align="center">
+                                                    <button name="anular_correspondencia_entrada" type="button" value="{{ rs.0 }}" class="btn btn-danger btn-circle btn-xs fa fa-close"></button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="card border-dark mb-3">
+            <div class="card-header bg-secondary border-dark text-white">
+                <i class="fa fa-tasks"></i>&emsp;Tipo Documental
+            </div>
+            <form class="form-horizontal" name="form-agregar_tipo_documental" method="post" action="{% url 'guardar_tipo_documental' %}">{% csrf_token %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="control-label">Tipo Documental:</label>
+                            <input class="form-control" name="agr_tipo_documental" type="text" />
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="col-12 text-right">
+                            <button type="submit" title="Guardar" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i>&emsp;Guardar&emsp;</button>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="table-responsive" style="font-size: x-small">
+                                    <table class="table table-bordered table-hover dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr align="center" style="font-size: 8pt;" class="alert-success">
+                                                <th align="center">No.</th>
+                                                <th align="center">Tipo Documental</th>
+                                                <th align="center">Editar</th>
+                                                <th align="center">Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for t in tipos %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ t.1 }}</td>
+                                                <td align="center">
+                                                    <button name="editar_correspondencia_entrada" type="button" value="{{ rsu.0 }}" class="btn btn-info btn-circle btn-xs fa fa-pencil"></button>
+                                                </td>
+                                                <td align="center">
+                                                    <button name="anular_correspondencia_entrada" type="button" value="{{ rsu.0 }}" class="btn btn-danger btn-circle btn-xs fa fa-close"></button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-dark mb-3">
+        <div class="card-header bg-secondary border-dark text-white">
+            <i class="fa fa-tasks"></i>&emsp;Asociación de documentos
+        </div>
+        <form class="form-horizontal" name="form-agregar_tipo_documental" method="post" action="{% url 'guardar_tipo_documental' %}">{% csrf_token %}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <label class="control-label">Dependencia:</label>
+                        <select class="form-control form-control-sm" name="dependencia">
+                            <option value="">Seleccione</option>
+                            {% for d in dependencias %}
+                            <option value="{{ d.id }}">{{ d.codigo }} | {{ d.dependencia }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <label class="control-label">Serie Documental:</label>
+                        <select class="form-control form-control-sm" name="serie">
+                            <option value="">Seleccione</option>
+                            {% for serie in series %}
+                            <option value="{{ serie.0 }}">{{ serie.1 }} | {{ serie.2 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <label class="control-label">Subserie Documental:</label>
+                        <select class="form-control form-control-sm" name="subserie">
+                            <option value="">Seleccione</option>
+                            {% for subserie in subseries %}
+                            <option value="{{ subserie.0 }}">{{ subserie.1 }} | {{ subserie.2 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <label class="control-label">Tipo Documental:</label>
+                        <select class="form-control form-control-sm" name="tipo">
+                            <option value="">Seleccione</option>
+                            {% for tipo in tipos %}
+                            <option value="{{ tipo.0 }}">{{ tipo.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="col-12 text-right">
+                    <button type="submit" title="Guardar" class="btn btn-success btn-sm"><i class="fa fa-check-circle"></i>&emsp;Guardar&emsp;</button>
+                </div>
+                <div class="col-12">
+                    <hr>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="table-responsive" style="font-size: x-small">
+                            <table class="table table-bordered table-hover dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr align="center" style="font-size: 8pt;" class="alert-success">
+                                        <th align="center">No.</th>
+                                        <th align="center">Dependencia</th>
+                                        <th align="center">Serie Documental</th>
+                                        <th align="center">Subserie Documental</th>
+                                        <th align="center">Tipo Documental</th>
+                                        <th align="center">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for agr in agrupaciones %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ agr.1 }}</td>
+                                        <td>{{ agr.2 }}</td>
+                                        <td>{{ agr.3}}</td>
+                                        <td>{{ agr.4 }}</td>
+                                        <td align="center">
+                                            <button name="anular_correspondencia_entrada" type="button" value="{{ agr.0 }}" class="btn btn-danger btn-circle btn-xs fa fa-close"></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

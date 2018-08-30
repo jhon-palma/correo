@@ -1,0 +1,107 @@
+{% extends 'plantilla.html' %}
+
+{% block correspondencia_entrada %}
+	active
+{% endblock %}
+
+{% block title %}
+    Escaneo de Documentos<small> - Correspondencia Entrante</small>
+{% endblock %}
+
+{% block breadcum %}
+    <li class="breadcrumb-item">
+        <i class="fa fa-folder-open"></i> Correspondencia entrante
+    </li>
+    <li class="breadcrumb-item active">
+        <i class="fa fa-file"></i> Escaneo de documentos
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div class="card border-info">
+                <div class="card-header text-white bg-info">
+                    <i class="fa fa-tasks"></i> Escaneo de documentos
+                </div>
+                <div class="card-body">
+                    <form class="form-horizontal" name="form-buscar_escaneo_documento" method="post" action="{% url 'escaneo_documentos' %}">{% csrf_token %}
+                        <div class="row">
+                            <div class="col-4">
+                                <label class="control-label">Fecha:</label>
+                                <div class="input-group input-group-sm">
+                                    <input class="form-control form-control-sm date fecha" id="fecha" name="fecha" autocomplete="off" required/>
+                                    <span class="input-group-append">
+                                        <span class="input-group-text selector_fecha alert-info"><i class="fa fa-calendar"></i></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <label class="control-label" style="color: white">_______________</label>
+                                <button type="submit" title="Buscar Registros" class="btn btn-info btn-sm" style="font-weight: 900"><i class="fa fa-search">&emsp;Buscar&emsp;</i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card border-success">
+                <div class="card-header alert-success border-success">
+                    <i class="fa fa-tasks"></i> Registros Ingresados
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover dataTable" width="100%" cellspacing="0" style="font-size: x-small">
+                            <thead class="alert-secondary text-center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fecha documento</th>
+                                    <th>N° radicado</th>
+                                    <th>Nombre persona / entidad</th>
+                                    <th>Asunto</th>
+                                    <th>Tipo de documento</th>
+                                    <th>Adjunto</th>
+                                    <th>Guardar</th>
+                                </tr>
+                            </thead>
+                            <tfoot class="alert-secondary text-center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fecha documento</th>
+                                    <th>N° radicado</th>
+                                    <th>Nombre persona / entidad</th>
+                                    <th>Asunto</th>
+                                    <th>Tipo de documento</th>
+                                    <th>Adjunto</th>
+                                    <th>Guardar</th>
+                                </tr>
+                            </tfoot>
+                            <tbody class="text-center" id="forms-escaneo">
+                                {% for r in registros %}
+                                    <tr id="escaneo-{{ r.id }}">
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ r.fecha_documento_radicado | date:"d/m/Y" }}</td>
+                                        <td>{{ r.numero_radicacion }}</td>
+                                        <td>{{ r.remitente.nombre }}</td>
+                                        <td>{{ r.asunto }}</td>
+                                        <td>{{ r.tipo_documento.tipo }}</td>
+                                        <td class="text-left">
+                                            <form id="form-{{ r.id }}" method="post" action="{% url 'escaneo_documentos' %}" enctype="multipart/form-data">{% csrf_token %}
+                                                <input type="file" class="form-control form-control-sm" name="adjunto" style="padding: 0px">
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-success adjunto" type="button" value="{{ r.id }}"><i class="fa fa-check"></i></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

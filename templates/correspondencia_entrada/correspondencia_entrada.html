@@ -1,0 +1,270 @@
+{% extends 'plantilla.html' %}
+
+{% block correspondencia_entrada %}
+	active
+{% endblock %}
+
+{% block title %}
+    Registro de Correspondencia Entrante
+{% endblock %}
+
+{% block breadcum %}
+    <li class="breadcrumb-item">
+        <i class="fa fa-folder-open"></i> Correspondencia entrante
+    </li>
+    <li class="breadcrumb-item active">
+        <i class="fa fa-file"></i> Ingreso de Registros
+    </li>
+{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+    {% include "correspondencia_entrada/edicion_correspondencia_entrada.html" %}
+    {% include "remitente/remitente.html" %}
+
+    <div class="card border-info mb-3">
+        <div class="card-header bg-info text-white">
+            <i class="fa fa-tasks"></i> Registro de correspondencia entrante
+        </div>
+        <form class="form-horizontal" name="form-guardar_correspondencia_entrada" id="form-guardar_correspondencia_entrada" method="post" action="{% url 'guardar_correspondencia_entrada' %}" enctype="multipart/form-data">{% csrf_token %}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 col-sm-5 col-xs-12">
+                        <div class="col-12">
+                            <label class="col-form-label-sm">Número de id del remitente:</label>
+                            <div class="input-group input-group-sm">
+                                <input name="numero_id" id="numero_id" class="form-control form-control-sm form-control " type="text" required />
+                                <span class="input-group-append">
+                                    <button id="buscar_remitente" class="btn btn-info" type="button"><i class="fa fa-search"></i> </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px" class="col-lg-12 col-sm-12 col-xs-12">
+                            <hr>
+                        </div>
+                        <div class="col-12" style="padding-bottom: 20px">
+                            <label class="col-form-label-sm">Datos del Remitente:</label>
+                            <button id="editar_remitente" value="" class="btn btn-success btn-sm pull-right" type="button" disabled><i class="fa fa-pencil"></i></button>
+                        </div>
+                        <div class="row">
+                            <div class="col-5" style="padding-bottom: 20px">
+                                <i id="img-user" class="fa fa-user-circle-o" style="font-size: 120px"></i>
+                            </div>
+                            <div class="col-7 row">
+                                <div class="col-lg-12 col-sm-12 col-xs-12">
+                                    <label class="col-form-label-sm">Nombre:</label>
+                                    <p id="text_nombre"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 row">
+                            <div class="col-sm-5 col-12">
+                                <label class="col-form-label-sm">T. persona:</label>
+                                <p id="text_tipo_persona"></p>
+                            </div>
+                            <div class="col-sm-3 col-6">
+                                <label class="col-form-label-sm">T. Id:</label>
+                                <p id="text_tipo_id"></p>
+                            </div>
+                            <div class="col-sm-4 col-6">
+                                <label class="col-form-label-sm">Número:</label>
+                                <p id="text_numero_id"></p>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="col-form-label-sm">Dirección:</label>
+                                <p id="text_direccion"></p>
+                            </div>
+                            <div class="col-sm-4 col-12">
+                                <label class="col-form-label-sm">Telefono:</label>
+                                <p id="text_telefono"></p>
+                            </div>
+                            <div class="col-sm-8 col-12">
+                                <label class="col-form-label-sm">Email:</label>
+                                <p id="text_email"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8 col-sm-7 col-xs-12 border-left">
+                        <div class="col-12" id="campos_form">
+                            <div class="row">
+                                <div class="col-sm-6 col-12">
+                                    <label class="col-form-label-sm">Procedencia de Correspondencia:</label>
+                                    <select class="form-control form-control-sm" id="procedencia" name="procedencia" required>
+                                        <option value="">Seleccione</option>
+                                        {% for p in procedencia %}
+                                        <option value="{{ p.id }}">{{ p.tipo }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-sm-6 col-12" id="depen_origen" hidden>
+                                    <label class="col-form-label-sm">Dependencia de origen:</label>
+                                    <select class="form-control form-control-sm" name="dependencia_origen" id="dependencia_origen">
+                                        <option value="">Seleccione</option>
+                                        {% for d in dependencias %}
+                                        <option value="{{ d.id }}">{{ d.dependencia }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <hr>
+                                </div>
+
+                                <div class="col-lg-6 col-sm-12 col-xs-12">
+                                    <label class="col-form-label-sm">Dependencia de destino:</label>
+                                    <select class="form-control form-control-sm" id="dependencia" name="dependencia" required>
+                                        <option value="">Seleccione</option>
+                                        {% for d in dependencias %}
+                                        <option value="{{ d.id }}">{{ d.dependencia }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-sm-12 col-xs-12">
+                                    <label class="col-form-label-sm">Serie documental:</label>
+                                    <select class="form-control form-control-sm" id="serie_documental" name="serie_documental" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-sm-12 col-xs-12">
+                                    <label class="col-form-label-sm">Subserie documental:</label>
+                                    <select class="form-control form-control-sm" id="subserie_documental" name="subserie_documental" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-sm-12 col-xs-12">
+                                    <label class="col-form-label-sm">Tipo documental:</label>
+                                    <select class="form-control form-control-sm" id="tipo_documental_retencion" name="tipo_documental_retencion" required>
+                                        <option value="">Seleccione</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <hr>
+                                </div>
+                                <div class="col-12">
+                                    <label class="col-form-label-sm">Asunto:</label>
+                                    <input class="form-control form-control-sm" id="asunto" name="asunto" required/>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="col-form-label-sm">Observaciones:</label>
+                                    <textarea class="form-control form-control-sm" id="observacion" name="observacion"></textarea>
+                                </div>
+
+                                <div class="col-lg-4 col-sm-6 col-xs-6">
+                                    <label class="col-form-label-sm">Tipo documento:</label>
+                                    <select class="form-control form-control-sm" id="tipo_documento" name="tipo_documento" required>
+                                        <option value="">Seleccione</option>
+                                        {% for t in tipo_documento %}
+                                            <option value="{{ t.id }}">{{ t.tipo }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 col-sm-6 col-xs-6">
+                                    <label class="col-form-label-sm">Fecha documento:</label>
+                                    <div class="input-group mb-3">
+                                        <input class="form-control form-control-sm date fecha" id="fecha_documento" name="fecha_documento" autocomplete="off" required/>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text alert-info selector_fecha"><i class="fa fa-calendar"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6 col-xs-6">
+                                    <label class="col-form-label-sm">Número de folios:</label>
+                                    <input class="form-control form-control-sm" type="number" id="numero_folios" name="numero_folios" required/>
+                                </div>
+                                <div class="col-12">
+                                    <label class="col-form-label-sm">Archivo adjunto:</label>
+                                    <input style="padding: 0px" class="form-control form-control-sm" type="file" id="adjunto" name="adjunto"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer border-info">
+                <div class="col-12">
+                    <button type="submit" title="Guardar" id="guardar_correspondencia_entrada" class="btn btn-success btn-sm btn-block"><i class="fa fa-check"></i> Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12 col-xs-12">
+    <div class="card border-success">
+        <div class="card-header alert-success border-success">
+			<i class="fa fa-table fa-fw"></i>&emsp;Registros realizados - <a style="font-weight: 900">Correspondencia Entrante</a>
+            <a class="pull-right" style="font-weight: 900">Fecha de Registros: {{ fecha_busqueda }}</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr align="center" style="font-size: 8pt;" class="alert-success">
+                            <th align="center">#</th>
+                            <th align="center">Fecha y hora de radicación</th>
+                            <th align="center">N° radicado</th>
+                            <th align="center">Nombre persona / entidad</th>
+                            <th align="center">Asunto</th>
+                            <th align="center">Tipo de documento</th>
+                            <th align="center">Editar</th>
+                            <th align="center">imprimir etiqueta</th>
+                            <th align="center">Anular</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr align="center" style="font-size: 8pt;" class="alert-success">
+                            <th align="center">#</th>
+                            <th align="center">Fecha y hora de radicación</th>
+                            <th align="center">N° radicado</th>
+                            <th align="center">Nombre persona / entidad</th>
+                            <th align="center">Asunto</th>
+                            <th align="center">Tipo de documento</th>
+                            <th align="center">Editar</th>
+                            <th align="center">imprimir etiqueta</th>
+                            <th align="center">Anular</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                    {% for r in registros_correspondencia_entrada %}
+                        <tr id="{{ r.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ r.fecha_recibido | date:"d/m/Y" }} - {{ r.hora_recibido }}</td>
+                            <td>{{ r.numero_radicacion }}</td>
+                            <td>{{ r.remitente.nombre }}</td>
+                            <td>{{ r.asunto }}</td>
+                            <td>{{ r.tipo_documento.tipo }}</td>
+                            <td align="center">
+                                <button name="editar_correspondencia_entrada" type="button" value="{{ r.id }}" class="btn btn-info btn-circle btn-xs fa fa-pencil"></button>
+                            </td>
+                            <td align="center">
+                                <button name='imprimir_etiqueta' type="button" value="{{ r.id }}" class="btn btn-success btn-circle btn-xs imprimir_etiqueta fa fa-id-card"></button>
+                            </td>
+                            <td align="center">
+                                <button name="anular_correspondencia_entrada" type="button" value="{{ r.id }}" class="btn btn-danger btn-circle btn-xs fa fa-close"></button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 60px" class="col-12"></div>
+{% endblock %}
+
+{% block onload %}
+    $('#campos_form').find('input, textarea, button, select').attr('disabled','disabled');
+    $('#guardar_correspondencia_entrada').attr('disabled','disabled');
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/funciones.js"></script>
+{% endblock %}

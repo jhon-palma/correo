@@ -1,0 +1,116 @@
+{% extends 'plantilla.html' %}
+
+{% block correspondencia_entrada %}
+	active
+{% endblock %}
+
+{% block title %}
+    Busqueda de Documentos Radicados<small> - Correspondencia Entrante</small>
+{% endblock %}
+
+{% block breadcum %}
+    <li class="breadcrumb-item">
+        <i class="fa fa-folder-open"></i> Correspondencia entrante
+    </li>
+    <li class="breadcrumb-item active">
+        <i class="fa fa-address-card"></i> Búsqueda de radicado
+    </li>
+{% endblock %}
+
+{% block content %}
+    {% include 'correspondencia_entrada/radicado_modal.html' %}
+    <div class="card border-info">
+        <div class="card-header bg-info text-white">
+            <i class="fa fa-tasks"></i>&emsp;Resultados de la Busqueda
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    <form class="form-horizontal" name="form-buscar_documento_radicado" method="post" action="{% url 'correspondencia_radicado' %}">{% csrf_token %}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-group input-group-sm">
+                                    <div class="input-group-prepend alert-primary">
+                                        <span class="input-group-text alert-primary" style="font-weight: 900">Código de radicado</span>
+                                    </div>
+                                    <input class="form-control input-sm" id="codigo_radicado" name="codigo_radicado" style="font-weight: 900">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text alert-info" style="font-weight: 900">Número de Id</span>
+                                    </div>
+                                    <input class="form-control input-sm" id="numero_identificacion" name="numero_identificacion" style="font-weight: 900">
+                                    <div class="input-group-append">
+                                        <button type="button" id="buscar_documento_radicado" class="btn btn-info btn-sm" style="font-weight: 900">&emsp;<i class="fa fa-search"></i>&emsp;Buscar &emsp;</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div style="margin-bottom: 15px" class="col-12">
+                    <hr>
+                </div>
+                <div class="col-sm-7 col-12">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">Fecha de radicación:</label>
+                            <p>{{ registro.fecha_recibido }} - {{ registro.hora_recibido }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">Número de Radicado:</label>
+                            <p>{{ registro.numero_radicacion }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">Tipo de Correspondencia:</label>
+                            <p>{{ registro.tipo_correspondencia.tipo }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">Remitente:</label>
+                            <p>{{ registro.remitente.nombre }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">N° de identificación:</label>
+                            <p>{{ registro.remitente.numero_id }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">Fecha del Documento:</label>
+                            <p>{{ registro.fecha_documento_radicado }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">Tipo de Documento:</label>
+                            <p>{{ registro.tipo_documento.tipo }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">N° de folios:</label>
+                            <p>{{ registro.numero_folios_documento }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">Asunto:</label>
+                            <p>{{ registro.asunto }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">Dependencia de Destino:</label>
+                            <p>{{ registro.dependencia.dependencia }}</p>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-xs-12">
+                            <label class="col-form-label-sm">Estado:</label>
+                            {% if registro.visualizado == False %}
+                                <p>Pendiente por Lectura</p>
+                            {% else %}
+                                <p>Visto, Pendiente por respuesta</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5 col-12">
+                    {% if registro.archivo_digital %}
+                        <embed src="{{ registro.archivo_digital.url }}" width="100%" height="450">
+                    {% else %}
+                        <img src="/static/img/no_disponible.png" width="100%">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 60px" class="col-lg-12 col-md-12 col-xs-12"></div>
+{% endblock %}

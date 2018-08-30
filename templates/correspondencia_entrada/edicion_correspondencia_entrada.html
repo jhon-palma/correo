@@ -1,0 +1,95 @@
+<div class="container initial">
+	<!-- Modal -->
+	<div id="edicion_correspondencia_modal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="card border-info modal-content">
+                <div class="card-header bg-info text-white mb-3">
+                    <i class="fa fa-bars"></i>&emsp;Edición de registro Correspondencia
+                    <button type="button" id="cerrar_remitente" class="close fa-2x text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <form class="form-horizontal form-group-sm" method="post" id="form-guardar_edicion_correspondencia" action="{% url 'editar_correspondencia_entrada' %}"> {% csrf_token %}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12" hidden="hidden">
+                                <input name="editar_correspondencia_entrada" id="editar_correspondencia_entrada">
+                            </div>
+                            <div class="col-12">
+                                <label class="col-form-label-sm">Procedencia de Correspondencia:</label>
+                                <select class="form-control form-control-sm" id="editar_procedencia" name="editar_procedencia" required>
+                                    <option value="">Seleccione</option>
+                                    {% for p in procedencia %}
+                                    <option value="{{ p.id }}">{{ p.tipo }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <hr>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label class="col-form-label-sm">Dependencia de destino:</label>
+                                <select class="form-control form-control-sm" id="editar_dependencia" name="editar_dependencia" required>
+                                    <option value="">Seleccione</option>
+                                    {% for d in dependencias %}
+                                    <option value="{{ d.id }}">{{ d.dependencia }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label class="col-form-label-sm">Serie documental:</label>
+                                <select class="form-control form-control-sm" id="editar_serie_documental" name="editar_serie_documental" required>
+                                    <option value="">Seleccione</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label class="col-form-label-sm">Subserie documental:</label>
+                                <select class="form-control form-control-sm" id="editar_subserie_documental" name="editar_subserie_documental" required>
+                                    <option value="">Seleccione</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label class="col-form-label-sm">Tipo documental:</label>
+                                <select class="form-control form-control-sm" id="editar_tipo_documental_retencion" name="editar_tipo_documental_retencion" required>
+                                    <option value="">Seleccione</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <hr>
+                            </div>
+                            <div class="col-12">
+                                <label class="col-form-label-sm">Asunto:</label>
+                                <input class="form-control form-control-sm" id="editar_asunto" name="editar_asunto" required/>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="col-form-label-sm">Observaciones:</label>
+                                <textarea class="form-control form-control-sm" id="editar_observacion" name="editar_observacion"></textarea>
+                            </div>
+
+                            <div class="col-4">
+                                <label class="col-form-label-sm">Tipo de documento:</label>
+                                <select class="form-control form-control-sm" id="editar_tipo_documento" name="editar_tipo_documento" required>
+                                    <option value="">Seleccione</option>
+                                    {% for t in tipo_documento %}
+                                        <option value="{{ t.id }}">{{ t.tipo }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label class="col-form-label-sm">Fecha del documento:</label>
+                                <input class="form-control form-control-sm date" name="editar_fecha_documento" id="editar_fecha_documento" required/>
+                            </div>
+                            <div class="col-4">
+                                <label class="col-form-label-sm">Número de folios:</label>
+                                <input class="form-control form-control-sm" type="number" name="editar_numero_folios" id="editar_numero_folios" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer border-info">
+                        <button id="guardar_remitente" type="submit" class="btn btn-success btn-sm btn-block"><i class="fa fa-check"></i>&emsp;Guardar</button>
+                    </div>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>Reporte diario - correspondencia Entrada</title>
+        <style>
+            @page {
+                size: legal landscape ;
+                margin: 1cm;
+                margin-top: 3cm;
+
+                @top-left {
+                    margin-top: 1cm;
+                    content: url('/static/img/logo_2.png');
+                };
+
+                @top-center {
+                    margin-top: 1cm;
+                    font-size: 20pt;
+                    text-decoration: underline;
+                    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                    content: "LISTADO  DIARIO DE CORRESPONDENCIA POR DEPENDENCIA"
+                };
+
+                @bottom-left {
+                    font-size: 8pt;
+                    content: "Reporte generado el {{ fecha_hoy | date:'d/m/Y h:i a' }}";
+
+                };
+
+                @bottom-center {
+                    font-size: 12pt;
+                    content: "© Alcaldia municipal de Girardot"
+                };
+
+                @bottom-right {
+                    font-size: 8pt;
+                    content: "Página " counter(page) " de " counter(pages);
+                };
+
+            }
+            #customers {
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            #customers td, #customers th {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            #customers tr:nth-child(even){background-color: #f2f2f2;}
+
+            #customers tr:hover {background-color: #ddd;}
+
+            #customers th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                text-align: center;
+                text-transform: uppercase;
+                background-color: #969a96;
+                color: white;
+                font-size: 9pt;
+            }
+
+            #referencia{
+                font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            }
+
+            #referencia th {
+                padding-right: 5cm;
+                font-size: 11pt;
+                font-weight: 900;
+                text-align: center;
+                text-transform: uppercase;
+                color: black;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <hr>
+        </div>
+        <div>
+            <table width="100%" id="referencia">
+                <thead>
+                    <tr>
+                        <th>Fecha de Radicación Correspondencia:</th>
+                        <th>Dependencia:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ fecha_reporte | title }}</td>
+                        <td>{{ dependencia | title }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <hr>
+        </div>
+
+        <div>
+            <div>
+                <table width="100%" cellspacing="0" id="customers">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Fecha</th>
+                            <th>N° radicado</th>
+                            <th>Nombre persona / entidad</th>
+                            <th>Asunto</th>
+                            <th>Fecha de documento</th>
+                            <th>No. folios</th>
+                            <th>Tipo de documento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in registros %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ r.fecha_recibido | date:"d/m/Y" }} -  {{ r.hora_recibido | date:"h:i a" }}</td>
+                                <td>{{ r.numero_radicacion }}</td>
+                                <td>{{ r.remitente.nombre }}</td>
+                                <td>{{ r.asunto }}</td>
+                                <td>{{ r.fecha_documento_radicado | date:"d/m/Y" }}</td>
+                                <td>{{ r.numero_folios_documento }}</td>
+                                <td>{{ r.tipo_documento.tipo | upper }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <hr>
+        </div>
+        <div style="padding-top: 15px;padding-bottom: 15px">
+            <table width="100%" >
+                <tbody>
+                    <tr>
+                        <td>Firma Recibido:__________________________________________</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <hr>
+        </div>
+    </body>
+</html>
