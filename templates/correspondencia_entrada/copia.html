@@ -1,0 +1,31 @@
+<div class="container initial">
+	<!-- Modal -->
+	<div id="copia_modal" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
+			<!-- Modal content-->
+			<div class="card border-info modal-content">
+                <div class="card-header bg-info text-white">
+                    <i class="fa fa-bars"></i> <a id="titulo_remitente">&emsp;Correspondencia con copia a:</a>
+                    <button type="button" id="cerrar_remitente" class="close fa-2x text-white" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Con copia a: </label><br>
+                                {% for h in dependencias %}
+                                    <div class="checkbox">
+
+                                            <input type="checkbox" name="ccopia[]" id="{{ h.id }}" value="{{ h.id }}"/>&emsp;{{ h.dependencia }}
+
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</div>

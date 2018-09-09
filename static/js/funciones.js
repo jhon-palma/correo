@@ -59,7 +59,7 @@ $(window).ready(function(){
                         $("#text_telefono").text(data.telefono);
                         $("#text_email").text(data.email);
                         $("#img-user").attr('style','color:green;font-size: 120px');
-                        $('#campos_form').find('input, textarea, button, select').removeAttr('disabled');
+                        $('#campos_form').find('input, textarea, select').removeAttr('disabled');
                         $('#editar_remitente').removeAttr('disabled');
                         $('#guardar_correspondencia_entrada').removeAttr('disabled');
                     }
@@ -159,6 +159,9 @@ $(window).ready(function(){
                 var data = {indicador:0,mensaje:"Ha ocurrido un error de comunicación con el servidor, por favor actualice la página"};
                 notificaciones(data);
             });
+            $('#copiaDestino').removeAttr('disabled');
+        }else{
+            $('#copiaDestino').attr('disabled', 'disabled');
         }
     });
 
@@ -435,6 +438,14 @@ $(window).ready(function(){
         buscar_datos_remitente(numero, url, data);
     });
 
+    $("#copiaDestino").click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        var numero = $("#dependencia").val();
+        $("#"+numero).attr("disabled", true);
+        $("#copia_modal").modal('show');
+    });
+
     $('#codigo_radicado').focusout(function (e) {
         e.preventDefault();
         e.stopImmediatePropagation();
@@ -634,5 +645,5 @@ $(window).ready(function(){
         });
     });
 
-    
+
 });

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <title>Imagenologia - Etiqueta</title>
+        <title>CE - Etiqueta</title>
         <style>
         @page {
             size: 7.8cm 6cm ;
             margin: -8px;
             padding: 0px;
         }
-        
+
         .texto {
             font-family: "Bar-Code 39";
             font-size: 14pt;
@@ -51,6 +51,17 @@
             -moz-border-radius: 5px 5px 5px 5px;
             -webkit-border-radius: 5px 5px 5px 5px;
             border-color: black;
+        }
+        .div3 {
+            float: left;
+            margin: 10px 2px;
+            width: 7.55cm;
+            height: 5.7cm;
+            border-style: solid;
+            border-radius: 5px 5px 5px 5px;
+            -moz-border-radius: 5px 5px 5px 5px;
+            -webkit-border-radius: 5px 5px 5px 5px;
+            border-color: black;
 
         }
         .imagen {
@@ -63,51 +74,105 @@
             <table>
                 <tr>
                     <td class="text etiqueta" colspan="2">CODIGO DE RADICADO:</td>
-                    <td class="text" colspan="3"><a> {{ numero_radicacion}} </a></td>
+                    <td class="text" colspan="3"><a> {{ radicado.numero_radicacion}} </a></td>
                 </tr>
                 <tr>
                     <td colspan="6"><hr></td>
                 </tr>
                 <tr>
                     <td class="text etiqueta" colspan="2">TIPO CORRESPONDENCIA:</td>
-                    <td class="text" colspan="2"><a> {{ tipo_correspondencia }} </a></td>
+                    <td class="text" colspan="2"><a> {{ radicado.tipo_correspondencia.tipo }} </a></td>
                 </tr>
                 <tr>
                     <td class="text etiqueta" colspan="2">FECHA DE RADICACIÓN:</td>
-                    <td class="text" colspan="3"><a> {{ fecha_recibido }} - {{ hora_recibido }} </a></td>
+                    <td class="text" colspan="3"><a> {{ radicado.fecha_recibido|date:"d/m/Y" }} - {{ radicado.hora_recibido }} </a></td>
                 </tr>
                 <tr>
                     <td class="text etiqueta" colspan="2">FECHA DE DOCUMENTO:</td>
-                    <td class="text" colspan="2"><a> {{ fecha_documento }} </a></td>
+                    <td class="text" colspan="2"><a> {{ radicado.fecha_documento_radicado|date:"d/m/Y" }} </a></td>
                 </tr>
                 <tr>
                     <td class="text" colspan="2">N° DE FOLIOS:</td>
-                    <td class="text" colspan="2"><a> {{ folios }} </a></td>
+                    <td class="text" colspan="2"><a> {{ radicado.numero_folios_documento }} </a></td>
                 </tr>
                 <tr>
                     <td class="text etiqueta" colspan="2">TIPO DE DOCUMENTO:</td>
-                    <td class="text" colspan="3"><a> {{ tipo_documento }}</a></td>
+                    <td class="text" colspan="3"><a> {{ radicado.tipo_documento.tipo }}</a></td>
                 </tr>
                 <tr>
                     <td class="text etiqueta" colspan="2">REMITENTE:</td>
-                    <td class="text campo" colspan="4"><a>{{ remitente }}</a></td>
+                    <td class="text campo" colspan="4"><a>{{ radicado.remitente.nombre }}</a></td>
                 </tr>
                 <tr>
                     <td class="text fecha" colspan="2">N° ID:</td>
-                    <td class="text fecha" colspan="1"><a>{{ numero_id }}</a></td>
+                    <td class="text fecha" colspan="1"><a>{{ radicado.remitente.numero_id }}</a></td>
                 </tr>
                 <tr>
                     <td class="text etiqueta" colspan="2">AREA DE DESTINO:</td>
-                    <td class="text campo" colspan="4"><a>{{ dependencia }} </a></td>
+                    <td class="text campo" colspan="4"><a>{{ radicado.dependencia.dependencia }} </a></td>
                 </tr>
                 <tr>
                     <td class="text fecha" colspan="2">ASUNTO:</td>
-                    <td class="text" colspan="5"><a>{{ asunto }}</a></td>
+                    <td class="text" colspan="5"><a>{{ radicado.asunto }}</a></td>
                 </tr>
                 <tr>
-                    <td class="texto" colspan="7">*{{ numero_radicacion }}*</td>
+                    <td class="texto" colspan="7">*{{ radicado.numero_radicacion }}*</td>
                 </tr>
             </table>
         </div>
+        {% if copia %}
+            {% for radicado in copia %}
+                <div class="div3">
+                    <table>
+                        <tr>
+                            <td class="text etiqueta" colspan="2">COPIA DEL RADICADO:</td>
+                            <td class="text" colspan="3"><a> {{ radicado.correspondencia.numero_radicacion}} </a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="6"><hr></td>
+                        </tr>
+                        <tr>
+                            <td class="text etiqueta" colspan="2">TIPO CORRESPONDENCIA:</td>
+                            <td class="text" colspan="2"><a> {{ radicado.correspondencia.tipo_correspondencia.tipo }} </a></td>
+                        </tr>
+                        <tr>
+                            <td class="text etiqueta" colspan="2">FECHA DE RADICACIÓN:</td>
+                            <td class="text" colspan="3"><a> {{ radicado.correspondencia.fecha_recibido|date:"d/m/Y" }} - {{ radicado.correspondencia.hora_recibido }} </a></td>
+                        </tr>
+                        <tr>
+                            <td class="text etiqueta" colspan="2">FECHA DE DOCUMENTO:</td>
+                            <td class="text" colspan="2"><a> {{ radicado.correspondencia.fecha_documento_radicado|date:"d/m/Y" }} </a></td>
+                        </tr>
+                        <tr>
+                            <td class="text" colspan="2">N° DE FOLIOS:</td>
+                            <td class="text" colspan="2"><a> {{ radicado.correspondencia.numero_folios_documento }} </a></td>
+                        </tr>
+                        <tr>
+                            <td class="text etiqueta" colspan="2">TIPO DE DOCUMENTO:</td>
+                            <td class="text" colspan="3"><a> {{ radicado.correspondencia.tipo_documento.tipo }}</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text etiqueta" colspan="2">REMITENTE:</td>
+                            <td class="text campo" colspan="4"><a>{{ radicado.correspondencia.remitente.nombre }}</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text fecha" colspan="2">N° ID:</td>
+                            <td class="text fecha" colspan="1"><a>{{ radicado.correspondencia.remitente.numero_id }}</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text etiqueta" colspan="2">AREA DE DESTINO:</td>
+                            <td class="text campo" colspan="4"><a>{{ radicado.dependencia.dependencia }} </a></td>
+                        </tr>
+                        <tr>
+                            <td class="text fecha" colspan="2">ASUNTO:</td>
+                            <td class="text" colspan="5"><a>{{ radicado.correspondencia.asunto }}</a></td>
+                        </tr>
+                        <tr>
+                            <td class="texto" colspan="7">*{{ radicado.correspondencia.numero_radicacion }}*</td>
+                        </tr>
+                    </table>
+                </div>
+            {% endfor %}
+        {% endif %}
     </body>
 </html>

@@ -18,12 +18,12 @@
 {% endblock %}
 
 {% block style %}
-
 {% endblock %}
 
 {% block content %}
     {% include "correspondencia_entrada/edicion_correspondencia_entrada.html" %}
     {% include "remitente/remitente.html" %}
+
 
     <div class="card border-info mb-3">
         <div class="card-header bg-info text-white">
@@ -36,7 +36,7 @@
                         <div class="col-12">
                             <label class="col-form-label-sm">Número de id del remitente:</label>
                             <div class="input-group input-group-sm">
-                                <input name="numero_id" id="numero_id" class="form-control form-control-sm form-control " type="text" required />
+                                <input name="numero_id" id="numero_id" class="form-control form-control-sm form-control " type="number" min="1" required />
                                 <span class="input-group-append">
                                     <button id="buscar_remitente" class="btn btn-info" type="button"><i class="fa fa-search"></i> </button>
                                 </span>
@@ -118,6 +118,7 @@
 
                                 <div class="col-lg-6 col-sm-12 col-xs-12">
                                     <label class="col-form-label-sm">Dependencia de destino:</label>
+                                    <button id="copiaDestino" value="" class="btn btn-success btn-sm pull-right" type="button">Copia</button>
                                     <select class="form-control form-control-sm" id="dependencia" name="dependencia" required>
                                         <option value="">Seleccione</option>
                                         {% for d in dependencias %}
@@ -147,8 +148,8 @@
                                     <hr>
                                 </div>
                                 <div class="col-12">
-                                    <label class="col-form-label-sm">Asunto:</label>
-                                    <input class="form-control form-control-sm" id="asunto" name="asunto" required/>
+                                    <label class="col-form-label-sm">Asunto: <small>(Máx. 80 caract.)</small></label>
+                                    <input class="form-control form-control-sm" id="asunto" name="asunto" maxlength="80" required/>
                                 </div>
 
                                 <div class="col-12">
@@ -176,7 +177,7 @@
                                 </div>
                                 <div class="col-lg-4 col-sm-6 col-xs-6">
                                     <label class="col-form-label-sm">Número de folios:</label>
-                                    <input class="form-control form-control-sm" type="number" id="numero_folios" name="numero_folios" required/>
+                                    <input class="form-control form-control-sm" type="number" id="numero_folios" name="numero_folios" min="1" required/>
                                 </div>
                                 <div class="col-12">
                                     <label class="col-form-label-sm">Archivo adjunto:</label>
@@ -192,6 +193,7 @@
                     <button type="submit" title="Guardar" id="guardar_correspondencia_entrada" class="btn btn-success btn-sm btn-block"><i class="fa fa-check"></i> Guardar</button>
                 </div>
             </div>
+            {% include "correspondencia_entrada/copia.html" %}
         </form>
     </div>
 </div>

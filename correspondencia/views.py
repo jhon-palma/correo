@@ -107,6 +107,7 @@ def correspondencia_entrada(request):
 def guardar_correspondencia_entrada(request):
     if request.method == 'POST':
         try:
+
             nuevo_registro = Correspondencia_entrada()
 
             if 'dependencia_origen' in request.POST:
@@ -164,6 +165,12 @@ def guardar_correspondencia_entrada(request):
                 consecutivo_agr = Consecutivo.objects.get(correspondencia_x_oficina=co)
                 consecutivo_agr.consecutivo = consecutivo
                 consecutivo_agr.save()
+
+                ccopia = request.POST.getlist('ccopia[]')
+                for i in ccopia:
+                    c = Copia_correspondencia(correspondencia=nuevo_registro, dependencia=Dependencia.objects.get(id=i))
+                    c.save()
+
 
                 request.session['etiqueta_actual'] = str(nuevo_registro.id)
 
@@ -367,29 +374,18 @@ def etiqueta_PDF(request):
     if request.method == 'GET':
         if 'id_registro' in request.GET:
             id_registro = request.GET['id_registro']
-            consulta = Correspondencia_entrada.objects.filter(id=id_registro)
+            radicado = get_object_or_404(Correspondencia_entrada, pk=id_registro)
+            copia = Copia_correspondencia.objects.filter(correspondencia=id_registro)
+            for c in copia:
+                print("==============",c.correspondencia.asunto)
+            template = get_template('correspondencia_entrada/etiqueta.html')
+            context = {'radicado':radicado,'copia':copia}
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            weasyprint.HTML(string=html,base_url=request.build_absolute_uri()).write_pdf(response)
 
-            if consulta.exists():
-                dato = consulta[0]
+            return response
 
-                fecha_recibido = datetime.strptime(str(dato.fecha_recibido), "%Y-%m-%d").strftime("%d/%m/%Y")
-                fecha_documento = datetime.strptime(str(dato.fecha_documento_radicado), "%Y-%m-%d").strftime("%d/%m/%Y")
-
-                template = get_template('correspondencia_entrada/etiqueta.html')
-                context = {'fecha_recibido':fecha_recibido,'hora_recibido':(dato.hora_recibido),
-                           'numero_radicacion':dato.numero_radicacion,'remitente':dato.remitente.nombre,'numero_id':dato.remitente.numero_id,
-                           'dependencia':dato.dependencia.dependencia,'asunto':dato.asunto,'fecha_documento': fecha_documento,
-                           'tipo_documento':(dato.tipo_documento.tipo), 'folios':str(dato.numero_folios_documento), 'tipo_correspondencia':dato.tipo_correspondencia.tipo}
-                html = template.render(context)
-                response = HttpResponse(content_type='application/pdf')
-                weasyprint.HTML(string=html,base_url=request.build_absolute_uri()).write_pdf(response)
-
-                return response
-            else:
-                indicador = 0
-                mensaje = 'La etiqueta no puede ser generada, favor use el boton de la tabla'
-                request.session['respuesta'] = {'indicador': indicador, 'mensaje': mensaje}
-                return HttpResponseRedirect('correspondencia_entrada')
         else:
             indicador = 0
             mensaje = 'EL registro ya no esta disponible, actualice la pagina para continuar'
@@ -485,7 +481,6 @@ def guardar_usuario(request):
         try:
             validator = FormRegistroValidator(request.POST)
             validator.required = ['username', 'email', 'password', 'perfil']
-            import pdb; pdb.set_trace()
             if validator.is_valid():
                 usuario = User()
                 usuario.first_name = request.POST['firstname'].title()

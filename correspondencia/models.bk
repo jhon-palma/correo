@@ -138,7 +138,7 @@ class Correspondencia_entrada(models.Model):
     anulado = models.BooleanField(default=False)
     usuario = models.ForeignKey('Usuario', models.DO_NOTHING)
     copia = models.BooleanField(default=False)
-
+    
 
     class Meta:
         db_table = 'CORRESPONDENCIA_ENTRADA'
@@ -194,13 +194,6 @@ class Usuario_x_oficina(models.Model):
 
     class Meta:
         db_table = 'USUARIO_X_OFICINA_CORRESPONDENCIA'
-
-class Copia_correspondencia(models.Model):
-    correspondencia = models.ForeignKey('Correspondencia_entrada', models.DO_NOTHING)
-    dependencia = models.ForeignKey('Dependencia', models.DO_NOTHING)
-
-    class Meta:
-        db_table = 'COPIA_CORRESPONDENCIA'
 
 class Usuario(User):
 
